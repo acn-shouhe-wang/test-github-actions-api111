@@ -8,6 +8,19 @@
 name: Java CI with Gradle
 
 on:
+  workflow_dispatch:
+    inputs:
+      env_name:
+        description: 'Environment Name'
+        required: true
+        type: choice
+        options:
+          - main
+          - master
+          - dev1
+          - dev2
+          - stag
+          - uat
   push:
     branches: [ "main" ]
   pull_request:
@@ -34,4 +47,4 @@ jobs:
       run: |
          ./gradlew deleteJars
          ./gradlew copyJars
-         ./gradlew jar -Dprofile=dev1
+         ./gradlew jar -Dprofile=${{ inputs.env_name }}

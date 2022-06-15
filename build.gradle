@@ -29,6 +29,37 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
+tasks.register('deleteJars', Delete) {
+    delete 'build/libs/'
+}
+
+tasks.register('copyJars', Copy) {
+    mkdir('build/libs/lib')
+    from configurations.runtimeClasspath
+    into('build/libs/lib')
+}
+
+def env=System.getProperty("profile") ?:"dev2"
+
+jar {
+    archiveFileName = "test-github-actions-api-0.0.1.jar"
+    doFirst {
+        def file = new File("${buildDir}/resources/main/application.properties")
+        println("********************${env}********************")
+        file.newWriter(true).with {
+            it.write("\nspring.profiles.active=${env}")
+            it.flush()
+            it.close()
+        }
+    }
+    String jarList = ""
+    configurations.runtimeClasspath.each {jarList = jarList + " lib/" + it.name}
+    manifest {
+        attributes("Main-Class": "com.example.demo.Demo1Application",
+                "Class-Path": jarList)
+    }
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }

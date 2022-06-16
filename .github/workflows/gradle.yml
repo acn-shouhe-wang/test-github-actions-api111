@@ -15,12 +15,11 @@ on:
         required: true
         type: choice
         options:
-          - main
-          - master
           - dev1
           - dev2
           - stag
           - uat
+          - prd
   push:
     branches: [ "main" ]
   pull_request:
@@ -46,5 +45,5 @@ jobs:
     - name: Build with Gradle
       run: |
          ./gradlew deleteJars
-         ./gradlew jar -Dprofile=${{ inputs.env_name }}
          ./gradlew copyJars
+         ./gradlew jar -Dprofile=${{ inputs.env_name }}

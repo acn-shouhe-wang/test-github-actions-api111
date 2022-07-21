@@ -40,10 +40,14 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Build with Gradle
-      run: |
-         ./gradlew deleteJars
-         ./gradlew copyJars
-         ./gradlew jar -Dprofile=${{ inputs.env_name }}
+#    - name: Grant execute permission for gradlew
+#      run: chmod +x gradlew
+#    - name: Build with Gradle
+#      run: |
+#         ./gradlew deleteJars
+#         ./gradlew copyJars
+#         ./gradlew jar -Dprofile=${{ inputs.env_name }}
+    - uses: gradle/gradle-build-action@v2
+      with:
+        gradle-version: release-candidate
+    - run: ./gradlew bootJar

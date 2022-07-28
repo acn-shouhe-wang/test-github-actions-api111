@@ -55,7 +55,7 @@ jobs:
         echo $packageVersion
         packageVersionPre=$(echo $packageVersion | grep -oe "[0-9]\.[0-9]\.")
         echo $packageVersionPre
-        packageVersionEnd=$(echo $packageVersion | grep -oe "\.[0-9]$") | grep -oe "[0-9]"
+        packageVersionEnd=$(echo $packageVersion | grep -oe "\.[0-9]$" | grep -oe "[0-9]")
         echo $packageVersionEnd
         sum=$(($packageVersionEnd + 1))
         echo $sum

@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.0'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'maven-publish'
 }
 
 group = 'com.example'
@@ -16,6 +17,13 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://maven.pkg.github.com/acn-shouhe-wang/test-github-actions-api"
+        credentials {
+            username 'acn-shouhe-wang'
+            password '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'
+        }
+    }
 }
 
 dependencies {
@@ -29,37 +37,65 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-tasks.register('deleteJars', Delete) {
-    delete 'build/libs/'
-}
-
-tasks.register('copyJars', Copy) {
-    mkdir('build/libs/lib')
-    from configurations.runtimeClasspath
-    into('build/libs/lib')
-}
-
-def env=System.getProperty("profile") ?:"dev2"
-
-jar {
-    archiveFileName = "test-github-actions-api-0.0.1.jar"
-    doFirst {
-        def file = new File("${buildDir}/resources/main/application.properties")
-        println("********************${env}********************")
-        file.newWriter(true).with {
-            it.write("\nspring.profiles.active=${env}")
-            it.flush()
-            it.close()
-        }
-    }
-    String jarList = ""
-    configurations.runtimeClasspath.each {jarList = jarList + " lib/" + it.name}
-    manifest {
-        attributes("Main-Class": "com.example.demo.Demo1Application",
-                "Class-Path": jarList)
-    }
-}
+//tasks.register('deleteJars', Delete) {
+//    delete 'build/libs/'
+//}
+//
+//tasks.register('copyJars', Copy) {
+//    mkdir('build/libs/lib')
+//    from configurations.runtimeClasspath
+//    into('build/libs/lib')
+//}
+//
+//def env = System.getProperty("profile") ?: "dev2"
+//
+//jar {
+//    archiveFileName = "test-github-actions-api-0.0.1.jar"
+//    doFirst {
+//        def file = new File("${buildDir}/resources/main/application.properties")
+//        println("********************${env}********************")
+//        file.newWriter(true).with {
+//            it.write("\nspring.profiles.active=${env}")
+//            it.flush()
+//            it.close()
+//        }
+//    }
+//    String jarList = ""
+//    configurations.runtimeClasspath.each { jarList = jarList + " lib/" + it.name }
+//    manifest {
+//        attributes("Main-Class": "com.example.demo.Demo1Application",
+//                "Class-Path": jarList)
+//    }
+//}
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+publishing {
+    repositories {
+        maven {
+            url = uri("https://maven.pkg.github.com/acn-shouhe-wang/test-github-actions-api")
+            credentials {
+                username = 'acn-shouhe-wang'
+                password = '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'
+            }
+        }
+    }
+    publications {
+        myPublication(MavenPublication) {
+            from components.java
+            groupId = "test.a.b"
+            artifactId = 'test-github-actions-api'
+            version = "1.0.1"
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+        }
+    }
 }

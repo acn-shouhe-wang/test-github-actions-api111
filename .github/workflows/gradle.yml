@@ -55,3 +55,5 @@ jobs:
         ./gradlew bootJar
     - run: |
         packageVersion="$(gh api -H "Accept: application/vnd.github+json" /users/acn-shouhe-wang/packages/maven/test.a.b.test-github-actions-api/versions | jq .[].html_url | grep -oe "version=.*" | grep -oe "[0-9]\.[0-9]\.[0-9]")"
+      env:
+        GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}

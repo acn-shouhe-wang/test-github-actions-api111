@@ -27,6 +27,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'test.a.b:test-github-actions-api:1.0.+'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -36,6 +37,8 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
+
+version = System.getProperty("packageVersion") ? version : System.getProperty("packageVersion") + 1
 
 //tasks.register('deleteJars', Delete) {
 //    delete 'build/libs/'
@@ -87,15 +90,19 @@ publishing {
             from components.java
             groupId = "test.a.b"
             artifactId = 'test-github-actions-api'
-            version = "1.0.1"
+//            version = "1.0.8"
             versionMapping {
                 usage('java-api') {
                     fromResolutionOf('runtimeClasspath')
                 }
                 usage('java-runtime') {
-                    fromResolutionResult()
+                     fromResolutionResult()
                 }
             }
         }
+        // perhaps default publications
+//        maven(MavenPublication) {
+//            from components.java
+//        }
     }
 }

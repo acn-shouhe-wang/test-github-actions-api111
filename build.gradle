@@ -38,7 +38,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-version = System.getProperty("packageVersion") ? version : System.getProperty("packageVersion") + 1
+version = System.getProperty("packageVersion") ?:version
+println("version=" + version)
 
 //tasks.register('deleteJars', Delete) {
 //    delete 'build/libs/'

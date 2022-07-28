@@ -61,6 +61,6 @@ jobs:
         echo $sum
          
         chmod +x gradlew
-        ./gradlew bootJar -DpackageVersion=$(echo $packageVersionPre$sum)
+        ./gradlew publish -DpackageVersion=$(echo $packageVersionPre$sum)
       env:
         GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}

@@ -59,8 +59,8 @@ jobs:
         echo $packageVersionEnd
         sum=$(($packageVersionEnd + 1))
         echo $sum
-        
+         
         chmod +x gradlew
-        ./gradlew bootJar -DpackageVersion=$($packageVersionPre$sum)
+        ./gradlew bootJar -DpackageVersion=$(echo $packageVersionPre$sum)
       env:
         GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}

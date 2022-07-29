@@ -53,7 +53,7 @@ jobs:
         gradle-version: release-candidate
     - name: Set package version and run publish
       run: |
-        packageVersion="$(gh api -H "Accept: application/vnd.github+json" /users/acn-shouhe-wang/packages/maven/test.a.b.test-github-actions-api/versions | jq .[].html_url | grep -oe "version=.*" | grep -oe "[0-9]\.[0-9]\.[0-9]" | head -n 1)"
+        packageVersion="$(gh api -H "Accept: application/vnd.github+json" /users/acn-shouhe-wang/packages/maven/test.a.b.test-github-actions-api/versions | jq .[].html_url | grep -oe "version=.*" | grep -oe "[0-9]\.[0-9]\.[0-9]" | sort -r | head -n 1)"
         echo $packageVersion
         newVersion=""
         if [ ! -z "$packageVersion" ]; then

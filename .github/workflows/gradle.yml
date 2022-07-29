@@ -51,7 +51,7 @@ jobs:
     - uses: gradle/gradle-build-action@v2
       with:
         gradle-version: release-candidate
-    - name: Get package version and run publish
+    - name: Set package version and run publish
       run: |
         packageVersion="$(gh api -H "Accept: application/vnd.github+json" /users/acn-shouhe-wang/packages/maven/test.a.b.test-github-actions-api/versions | jq .[].html_url | grep -oe "version=.*" | grep -oe "[0-9]\.[0-9]\.[0-9]" | head -n 1)"
         echo $packageVersion

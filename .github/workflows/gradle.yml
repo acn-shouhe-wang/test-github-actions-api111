@@ -62,7 +62,6 @@ jobs:
           packageVersionEnd=$(echo $packageVersion | awk -F. '{print $3}')
           echo $packageVersionEnd
           sum=$(($packageVersionEnd + 1))
-          echo $sum
           newVersion=$(echo $packageVersionPre$sum)
         fi
          

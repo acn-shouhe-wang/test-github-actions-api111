@@ -32,9 +32,6 @@ jobs:
   build:
     env:
       GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
-      ecrUrl: devops-test
-      ecrName: core
-      currentBuildNumber: 1
 
     runs-on: ubuntu-latest
     steps:
@@ -71,16 +68,3 @@ jobs:
          
         chmod +x gradlew
         ./gradlew publish -DpackageVersion=$newVersion
-
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        role-to-assume: arn:aws:iam::046412967854:role/lamp-devops-github-test
-        aws-region: ap-northeast-1
-    - name: Docker build image
-      run: |
-        aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin ${{ env.ecrUrl }}
-        dockerFileName=$(find . -type f -name "Dockerfile")
-        docker build -t ${{ env.ecrName }} -f ${{ env.dockerFileName }} .
-        docker tag ${{ env.ecrName }}:latest ${{ env.ecrUrl }}/${{ env.ecrName }}:${{ env.currentBuildNumber }}
-        docker push ${{ env.ecrUrl }}/${{ env.ecrName }}:${{ env.currentBuildNumber }}

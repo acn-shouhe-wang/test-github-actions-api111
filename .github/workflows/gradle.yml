@@ -55,7 +55,6 @@ jobs:
     - name: Set package version and run publish
       run: |
         packageVersion="$(gh api -H "Accept: application/vnd.github+json" /users/acn-shouhe-wang/packages/maven/${{ env.PACKAGE_NAME }}/versions | jq .[].html_url | grep -oe "version=.*" | grep -oe "[0-9]*\.[0-9]*\.[0-9]*" | sort -Vr | head -n 1)"
-        newVersion=""
         if [ -n "$packageVersion" ]; then
           echo 'Old version is '$packageVersion
           packageVersionPre=$(echo $packageVersion | grep -oe "[0-9]*\.[0-9]*\.")
